@@ -1,53 +1,60 @@
 import React, { Component } from "react";
-
+import imag from "./assets/react.svg"
 export default class App extends Component {
   state = {
     count: 0,
     step: 0,
+    counter: [0],
   };
-  plusBtn = () => {
-    const { count } = this.state;
-    this.setState({
-      count: count + 1,
+
+  addCounter = () => {
+    this.setState((prevState) => ({
+      counter: [...prevState.counter, 0],
+    }));
+  };
+
+  plusCount = (index) => {
+    this.setState((prevState) => {
+      const newCounter = [...prevState.counter];
+      newCounter[index] += 1;
+      return { counter: newCounter };
     });
   };
-  minusBtn = () => {
-    const { count } = this.state;
-    this.setState({
-      count: count - 1,
+
+  minusCount = (index) => {
+    this.setState((prevState) => {
+      const newCounter = [...prevState.counter];
+      newCounter[index] -= 1;
+      return { counter: newCounter };
     });
   };
-  plusStep = () => {
-    const { count, step } = this.state;
-    this.setState({
-      step: step + count,
-    });
-  };
-  minusStep = () => {
-    const { count, step } = this.state;
-    this.setState({
-      step: step - count,
-    });
-  };
+
   render() {
-    const { count, step } = this.state;
+    const { counter } = this.state;
     return (
-      <div className="container offset-5">
-        <div className="d-flex my-4 gap-3">
-          <button onClick={this.plusStep} className="btn btn-success">
-            +
-          </button>
-          <h1>{step}</h1>
-          <button onClick={this.minusStep} className="btn btn-success">-</button>
-        </div>
-        <div className="d-flex gap-3 mt-4 juctify-center">
-          <button className="btn btn-primary" onClick={this.plusBtn}>
-            +
-          </button>
-          <h1>{count}</h1>
-          <button className="btn btn-danger" onClick={this.minusBtn}>
-            -
-          </button>
+      <div className="d-flex align-items-center pt-4 flex-column gap-3">
+        <img src={imag} alt="salom" width={"400px"} />
+        <div className="d-flex justify-content-center flex-column align-items-center pt-4">
+          <button className="btn btn-success" onClick={this.addCounter}>Add Btn</button>
+          {counter.map((item, index) => {
+            return (
+              <div key={index} className="my-2 d-flex gap-3 align-items-center">
+                <button
+                  className="btn btn-primary mx-2"
+                  onClick={() => this.plusCount(index)}
+                >
+                  +
+                </button>
+                <h1>{item}</h1>
+                <button
+                  className="btn btn-primary mx-2"
+                  onClick={() => this.minusCount(index)}
+                >
+                  -
+                </button>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
